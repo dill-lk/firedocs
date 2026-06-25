@@ -2,10 +2,13 @@
 
 import { useEffect } from 'react';
 import { getSupabaseClient } from '@/lib/supabase/client';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const error = searchParams.get('error');
+  const errorDescription = searchParams.get('description');
 
   useEffect(() => {
     const checkUser = async () => {
@@ -35,6 +38,14 @@ export default function LoginPage() {
         <p className="text-primary-secondary mb-8">
           AI-Powered Developer Documentation
         </p>
+        {error && (
+          <div className="mb-6 p-4 bg-red-900/30 border border-red-800 rounded-lg max-w-md mx-auto">
+            <p className="text-red-400 text-sm font-medium">Authentication failed</p>
+            {errorDescription && (
+              <p className="text-red-300/70 text-xs mt-1">{decodeURIComponent(errorDescription)}</p>
+            )}
+          </div>
+        )}
         <button
           onClick={handleGitHubLogin}
           className="bg-surface-raised hover:bg-surface-muted text-primary-text px-6 py-3 rounded-lg border border-border-default transition-colors duration-fast flex items-center gap-3 mx-auto"
