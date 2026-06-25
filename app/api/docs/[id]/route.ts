@@ -75,7 +75,7 @@ export async function PATCH(
     // First check if user has access to this doc
     const { data: existingDoc } = await supabase
       .from('docs')
-      .select('workspace_id')
+      .select('workspace_id, content')
       .eq('id', id)
       .single();
 
