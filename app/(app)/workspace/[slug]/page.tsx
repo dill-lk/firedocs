@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase/client';
 import Sidebar from '@/components/workspace/Sidebar';
@@ -11,7 +11,8 @@ import DiagramPreview from '@/components/editor/DiagramPreview';
 import { Doc, Workspace, AIProvider } from '@/types';
 import AIProviderSelector from '@/components/ui/AIProviderSelector';
 
-export default function WorkspacePage({ params }: { params: { slug: string } }) {
+export default function WorkspacePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = use(params);
   const router = useRouter();
   const [workspace, setWorkspace] = useState<Workspace | null>(null);
   const [currentDoc, setCurrentDoc] = useState<Doc | null>(null);
@@ -22,11 +23,11 @@ export default function WorkspacePage({ params }: { params: { slug: string } }) 
 
   useEffect(() => {
     fetchWorkspace();
-  }, [params.slug]);
+  }, [slug]);
 
   const fetchWorkspace = async () => {
     try {
-      const response = await fetch(`/api/workspaces/${params.slug}`);
+      const response = await fetch(`/api/workspaces/${slug}`);
       if (!response.ok) {
         throw new Error('Workspace not found');
       }
@@ -132,7 +133,7 @@ export default function WorkspacePage({ params }: { params: { slug: string } }) 
       
       <div className="flex-1 flex overflow-hidden">
         <Sidebar
-          workspaceSlug={params.slug}
+          workspaceSlug={slug}
           workspaceId={workspace?.id}
           currentDocId={currentDoc?.id}
           onDocSelect={handleDocSelect}

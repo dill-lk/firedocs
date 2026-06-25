@@ -3,9 +3,10 @@ import { createClient } from '@/lib/supabase/server';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
+    const { slug } = await params;
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
@@ -19,7 +20,7 @@ export async function GET(
     const { data: workspace } = await supabase
       .from('workspaces')
       .select('*')
-      .eq('slug', params.slug)
+      .eq('slug', slug)
       .eq('owner_id', user.id)
       .single();
 
@@ -42,9 +43,10 @@ export async function GET(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
+    const { slug } = await params;
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
@@ -63,7 +65,7 @@ export async function PATCH(
         ...(name !== undefined && { name }),
         ...(is_public !== undefined && { is_public }),
       })
-      .eq('slug', params.slug)
+      .eq('slug', slug)
       .eq('owner_id', user.id)
       .select()
       .single();
@@ -87,9 +89,10 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
+    const { slug } = await params;
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
@@ -103,7 +106,7 @@ export async function DELETE(
     const { data: workspace } = await supabase
       .from('workspaces')
       .delete()
-      .eq('slug', params.slug)
+      .eq('slug', slug)
       .eq('owner_id', user.id)
       .select()
       .single();
