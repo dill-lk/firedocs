@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary-text: #f0ede6;
+    --color-primary-secondary: #6b6d7e;
+    --color-primary-accent: #c9a84c;
+    --color-surface-base: #06070d;
+    --color-surface-muted: #0e0f1a;
+    --color-surface-raised: #1a1b2e;
+    --color-border-default: #1a1b2e;
+    --color-border-muted: #2a2b3e;
+  }
+
+  * {
+    @apply border-border-default;
+  }
+
+  body {
+    @apply bg-surface-base text-primary-text;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
