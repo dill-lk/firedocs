@@ -48,13 +48,15 @@ export default function DiagramPreview({ content }: DiagramPreviewProps) {
     if (!mermaidLoaded || !containerRef.current || !window.mermaid) return;
 
     const renderDiagrams = async () => {
+      const container = containerRef.current;
+      if (!container) return;
       try {
         // Extract mermaid code blocks
         const mermaidRegex = /```mermaid\n([\s\S]*?)```/g;
         const matches = Array.from(content.matchAll(mermaidRegex));
 
         if (matches.length === 0) {
-          containerRef.current.innerHTML = `
+          container.innerHTML = `
             <div class="text-center text-primary-secondary py-8">
               <p>Add Mermaid diagrams to see preview</p>
               <p class="text-xs mt-2">Use:</p>
@@ -68,7 +70,7 @@ graph TD
         }
 
         // Clear previous content
-        containerRef.current.innerHTML = '';
+        container.innerHTML = '';
 
         // Render each diagram
         for (let i = 0; i < matches.length; i++) {
@@ -92,7 +94,7 @@ graph TD
               svgElement.style.height = 'auto';
             }
             
-            containerRef.current.appendChild(diagramContainer);
+            container.appendChild(diagramContainer);
           } catch (err) {
             console.error('Failed to render diagram:', err);
             const errorContainer = document.createElement('div');
@@ -101,7 +103,7 @@ graph TD
               <p class="text-red-400 text-sm">Failed to render diagram</p>
               <pre class="text-xs text-primary-secondary mt-2">${diagramCode}</pre>
             `;
-            containerRef.current.appendChild(errorContainer);
+            container.appendChild(errorContainer);
           }
         }
       } catch (err) {

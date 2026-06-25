@@ -104,7 +104,7 @@ async function generateWithOpenAI(prompt: string): Promise<string> {
     max_tokens: PROVIDER_CONFIGS.openai.maxTokens,
   });
 
-  return completion.choices[0].message.content || '';
+  return completion.choices[0]?.message?.content || '';
 }
 
 // Groq provider
@@ -120,7 +120,7 @@ async function generateWithGroq(prompt: string): Promise<string> {
     max_tokens: PROVIDER_CONFIGS.groq.maxTokens,
   });
 
-  return completion.choices[0].message.content || '';
+  return completion.choices[0]?.message?.content || '';
 }
 
 // Hugging Face provider
