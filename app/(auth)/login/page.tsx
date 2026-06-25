@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { supabase } from '@/lib/supabase/client';
+import { getSupabaseClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
@@ -9,7 +9,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     const checkUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const { data: { user } } = await getSupabaseClient().auth.getUser();
       if (user) {
         router.push('/dashboard');
       }
@@ -18,7 +18,7 @@ export default function LoginPage() {
   }, [router]);
 
   const handleGitHubLogin = async () => {
-    await supabase.auth.signInWithOAuth({
+    await getSupabaseClient().auth.signInWithOAuth({
       provider: 'github',
       options: {
         redirectTo: `${window.location.origin}/auth/callback`,

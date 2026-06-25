@@ -2,7 +2,6 @@
 
 import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabase/client';
 import Sidebar from '@/components/workspace/Sidebar';
 import WorkspaceHeader from '@/components/workspace/WorkspaceHeader';
 import MarkdownEditor from '@/components/editor/MarkdownEditor';
