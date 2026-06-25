@@ -21,13 +21,15 @@ export default function LoginPage() {
   }, [router]);
 
   const handleGitHubLogin = async () => {
-    await getSupabaseClient().auth.signInWithOAuth({
+    const { error } = await getSupabaseClient().auth.signInWithOAuth({
       provider: 'github',
       options: {
         redirectTo: `${window.location.origin}/auth/callback`,
-        scopes: 'read:user user:email',
       },
     });
+    if (error) {
+      console.error('OAuth error:', error.message);
+    }
   };
 
   return (
